@@ -1,39 +1,17 @@
 import { InputTextOpt, InputDate } from "./CustomInput";
 import { deleteObject, editObject } from "./auxiliaryFunctions.js";
 
-function Education({
-  title,
-  initialColor,
-  bgColor,
-  isActive,
-  onShow,
-  schoolName,
-  setSchoolName,
-  countryOfSchool,
-  setCountryOfSchool,
-  titleOfStudy,
-  setTitleOfStudy,
-  dateOfStudy,
-  setDateOfStudy,
-  educationArray,
-  setEducationArray,
-  addStudies,
-  inputFields
-}) {
-  let activeColor = isActive ? bgColor : initialColor;
+function Education(props) {
+  let activeColor = props.isActive ? props.bgColor : props.initialColor;
 
- /*  const inputFields = [
-    "titleOfStudy",
-    "dateOfStudy",
-    "schoolName",
-    "countryOfSchool",
-  ]; */
-  const listItems = educationArray.map((e) => (
+  const listItems = props.educationArray.map((e) => (
     <li key={e.id} id={e.id}>
       <div>
         <p>
           <b>
-            {e["education"].titleOfStudy.toUpperCase() + " - " + e["education"].dateOfStudy}
+            {e["education"].titleOfStudy.toUpperCase() +
+              " - " +
+              e["education"].dateOfStudy}
           </b>
         </p>
         <p>
@@ -44,64 +22,61 @@ function Education({
         </p>
       </div>
       <button
-        onClick={() => deleteObject(educationArray, e.id, setEducationArray)}
+        onClick={() =>
+          deleteObject(props.educationArray, e.id, props.setEducationArray)
+        }
       >
         remove
       </button>
       <button
-        onClick={() => editObject(educationArray, e.id, setEducationArray, inputFields, 'education')}
+        onClick={() =>
+          editObject(
+            props.educationArray,
+            e.id,
+            props.setEducationArray,
+            props.inputFields,
+            "education"
+          )
+        }
       >
         EDIT
       </button>
     </li>
   ));
-  
+
   return (
     <section className="headerSection" style={{ backgroundColor: activeColor }}>
-      <h2>{title}</h2>
-      {isActive ? (
+      <h2>{props.title}</h2>
+      {props.isActive ? (
         <>
           <FormEducation
             activeColor={activeColor}
-            schoolName={schoolName}
-            setSchoolName={setSchoolName}
-            countryOfSchool={countryOfSchool}
-            setCountryOfSchool={setCountryOfSchool}
-            titleOfStudy={titleOfStudy}
-            setTitleOfStudy={setTitleOfStudy}
-            dateOfStudy={dateOfStudy}
-            setDateOfStudy={setDateOfStudy}
-            addStudies={addStudies}
-            length={educationArray.length}
+            schoolName={props.schoolName}
+            setSchoolName={props.setSchoolName}
+            countryOfSchool={props.countryOfSchool}
+            setCountryOfSchool={props.setCountryOfSchool}
+            titleOfStudy={props.titleOfStudy}
+            setTitleOfStudy={props.setTitleOfStudy}
+            dateOfStudy={props.dateOfStudy}
+            setDateOfStudy={props.setDateOfStudy}
+            addStudies={props.addStudies}
+            length={props.educationArray.length}
             listItems={listItems}
           />
         </>
       ) : (
-        <button onClick={onShow}>Edit</button>
+        <button onClick={props.onShow}>Edit</button>
       )}
     </section>
   );
 }
 
-function FormEducation({
-  activeColor,
-  schoolName,
-  setSchoolName,
-  countryOfSchool,
-  setCountryOfSchool,
-  titleOfStudy,
-  setTitleOfStudy,
-  dateOfStudy,
-  setDateOfStudy,
-  addStudies,
-  length,
-  listItems,
-}) {
+function FormEducation(props) {
   return (
     <>
       <div
         className="preview"
-        style={{ display: "block", backgroundColor: activeColor }}
+        style={{ display: "block", backgroundColor: props.activeColor }}
       >
         <form id="education" autoComplete="off" noValidate>
           <div>
@@ -109,8 +84,8 @@ function FormEducation({
               key="titleOfStudy"
               label={"title Of the Study: ".toUpperCase()}
               id="titleOfStudy"
-              value={titleOfStudy}
-              onChange={(event) => setTitleOfStudy(event.target.value)}
+              value={props.titleOfStudy}
+              onChange={(event) => props.setTitleOfStudy(event.target.value)}
             />
           </div>
           <div>
@@ -118,8 +93,8 @@ function FormEducation({
               key="schoolName"
               label={"university/school: ".toUpperCase()}
               id="schoolName"
-              value={schoolName}
-              onChange={(event) => setSchoolName(event.target.value)}
+              value={props.schoolName}
+              onChange={(event) => props.setSchoolName(event.target.value)}
             />
           </div>
           <div>
@@ -127,35 +102,33 @@ function FormEducation({
               key="countryOfSchool"
               label={"School's country: ".toUpperCase()}
               id="countryOfSchool"
-              value={countryOfSchool}
-              onChange={(event) => setCountryOfSchool(event.target.value)}
+              value={props.countryOfSchool}
+              onChange={(event) => props.setCountryOfSchool(event.target.value)}
             />
           </div>
-          <div >
+          <div>
             <InputDate
               key="dateOfStudy"
               label={"date study end: ".toUpperCase()}
               id="dateOfStudy"
-              value={dateOfStudy}
-              onChange={(event) => setDateOfStudy(event.target.value)}
+              value={props.dateOfStudy}
+              onChange={(event) => props.setDateOfStudy(event.target.value)}
             />
           </div>
           <br></br>
         </form>
-        <button onClick={addStudies}>SAVE / ADD MORE</button>
+        <button onClick={props.addStudies}>SAVE / ADD MORE</button>
         <br></br>
-        {length === 0 ? (
+        {props.length === 0 ? (
           <>{null}</>
         ) : (
           <>
-            <ul>{listItems}</ul>
+            <ul>{props.listItems}</ul>
           </>
         )}
       </div>
     </>
   );
 }
-
-
 
 export { Education };

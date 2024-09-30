@@ -2,124 +2,98 @@ import { submitAllTheforms } from "./auxiliaryFunctions.js";
 import emailIcon from "../assets/img/email-outline.png";
 import phoneIcon from "../assets/img/phone-dial-outline.png";
 
-function Preview({
-  title,
-  initialColor,
-  bgColor,
-  isActive,
-  onShow,
-  aboutMeDetails,
-  aboutMeValidation,
-  educationArray,
-  experienceArray,
-  inputFieldsEducation,
-  inputFieldsExperience,
-  status,
-  setStatus,
-}) {
-  let activeColor = isActive ? bgColor : initialColor;
+function Preview(props) {
+  let activeColor = props.isActive ? props.bgColor : props.initialColor;
 
-  const listItemsEducation = educationArray.map((element) => (
+  const listItemsEducation = props.educationArray.map((element) => (
     <li key={element.id} className="cardEducation">
       <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
         <div>
           <p style={{ textTransform: "uppercase" }}>
-            {element.education[inputFieldsEducation[2]]}
+            {element.education[props.inputFieldsEducation[0]]}
           </p>
         </div>
         <div>
-          <p>{element.education[inputFieldsEducation[3]]}</p>
+          <p>{element.education[props.inputFieldsEducation[1]]}</p>
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
         <div>
           <p style={{ textTransform: "capitalize" }}>
-            {element.education[inputFieldsEducation[0]]}
+            {element.education[props.inputFieldsEducation[2]]}
           </p>
         </div>
         <div>
           <p style={{ textTransform: "capitalize" }}>
-            {element.education[inputFieldsEducation[1]]}
+            {element.education[props.inputFieldsEducation[3]]}
           </p>
         </div>
       </div>
     </li>
   ));
 
-  const listItemsExperience = experienceArray.map((element) => (
+  const listItemsExperience = props.experienceArray.map((element) => (
     <li key={element.id} className="cardExperience">
       <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
         <div>
-          <p>Since: {element.experience[inputFieldsExperience[2]]}</p>
+          <p>{element.experience[props.inputFieldsExperience[2]]} /</p>
         </div>
         <div>
-          <p>To: {element.experience[inputFieldsExperience[3]]}</p>
+          <p>{element.experience[props.inputFieldsExperience[3]]}</p>
         </div>
         <div>
           <p style={{ textTransform: "uppercase" }}>
-            {element.experience[inputFieldsExperience[0]]}
+            {element.experience[props.inputFieldsExperience[0]]}
           </p>
         </div>
         <div>
           <p style={{ textTransform: "capitalize" }}>
-            {element.experience[inputFieldsExperience[1]]}
+            {element.experience[props.inputFieldsExperience[1]]}
           </p>
         </div>
       </div>
 
       <div>
-        <p>{element.experience[inputFieldsExperience[4]]}</p>
+        <p>{element.experience[props.inputFieldsExperience[4]]}</p>
       </div>
     </li>
   ));
 
   return (
     <section className="headerSection" style={{ backgroundColor: activeColor }}>
-      <h2>{title}</h2>
-      {isActive ? (
+      <h2>{props.title}</h2>
+      {props.isActive ? (
         <>
           <PreviewCV
             activeColor={activeColor}
-            aboutMeDetails={aboutMeDetails}
-            aboutMeValidation={aboutMeValidation}
-            educationArray={educationArray}
-            lengthEducation={educationArray.length}
+            aboutMeDetails={props.aboutMeDetails}
+            aboutMeValidation={props.aboutMeValidation}
+            educationArray={props.educationArray}
+            lengthEducation={props.educationArray.length}
             listItemsEducation={listItemsEducation}
-            experienceArray={experienceArray}
-            lengthExperience={experienceArray.length}
+            experienceArray={props.experienceArray}
+            lengthExperience={props.experienceArray.length}
             listItemsExperience={listItemsExperience}
-            status={status}
-            setStatus={setStatus}
+            status={props.status}
+            setStatus={props.setStatus}
           />
         </>
       ) : (
-        <button onClick={onShow}>Edit</button>
+        <button onClick={props.onShow}>Edit</button>
       )}
     </section>
   );
 }
 
-function PreviewCV({
-  activeColor,
-  aboutMeDetails,
-  aboutMeValidation,
-  educationArray,
-  experienceArray,
-  lengthEducation,
-  listItemsEducation,
-  lengthExperience,
-  listItemsExperience,
-  status,
-  setStatus,
-}) {
+function PreviewCV(props) {
   const dataCV = {
-    firstName: aboutMeDetails.firstName,
-    lastName: aboutMeDetails.lastName,
-    email: aboutMeDetails.email,
-    phone: aboutMeDetails.phone,
-    description: aboutMeDetails.description,
-    education: educationArray,
-    experience: experienceArray,
+    firstName: props.aboutMeDetails.firstName,
+    lastName: props.aboutMeDetails.lastName,
+    email: props.aboutMeDetails.email,
+    phone: props.aboutMeDetails.phone,
+    description: props.aboutMeDetails.description,
+    education: props.educationArray,
+    experience: props.experienceArray,
   };
 
   const emailImg = new Image();
@@ -130,7 +104,7 @@ function PreviewCV({
   return (
     <div
       className="preview"
-      style={{ display: "block", backgroundColor: activeColor }}
+      style={{ display: "block", backgroundColor: props.activeColor }}
     >
       <div
         style={{
@@ -142,16 +116,21 @@ function PreviewCV({
       >
         <button
           onClick={() =>
-            submitAllTheforms("dataCV", dataCV, aboutMeValidation, setStatus)
+            submitAllTheforms(
+              "dataCV",
+              dataCV,
+              props.aboutMeValidation,
+              props.setStatus
+            )
           }
         >
           SUBMIT CV
         </button>
-        {status === "typing" ? (
+        {props.status === "typing" ? (
           <>{null}</>
         ) : (
           <>
-            <p style={{ color: "#900", fontSize: "1.5rem" }}>{status}</p>
+            <p style={{ color: "#900", fontSize: "1.5rem" }}>{props.status}</p>
           </>
         )}
       </div>
@@ -159,8 +138,8 @@ function PreviewCV({
       <h2 style={{ textAlign: "center" }}>PREVIEW</h2>
       <section className="aboutMePreview">
         <article className="cardAboutMe">
-          <p>First Name: {aboutMeDetails.firstName}</p>
-          <p>Last Name: {aboutMeDetails.lastName}</p>
+          <p>First Name: {props.aboutMeDetails.firstName}</p>
+          <p>Last Name: {props.aboutMeDetails.lastName}</p>
           <p style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
             <img
               src={emailImg.src}
@@ -168,7 +147,7 @@ function PreviewCV({
               height="auto"
               style={{ backgroundColor: "lightblue", alignItems: "center" }}
             ></img>
-            {aboutMeDetails.email}
+            {props.aboutMeDetails.email}
           </p>
           <p style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
             <img
@@ -177,7 +156,7 @@ function PreviewCV({
               height="auto"
               style={{ backgroundColor: "lightblue", alignItems: "center" }}
             ></img>
-            {aboutMeDetails.phone.toString()}
+            {props.aboutMeDetails.phone.toString()}
           </p>
         </article>
         <article className="cardAboutMe">
@@ -190,11 +169,11 @@ function PreviewCV({
           >
             Profile
           </h3>
-          <p>{aboutMeDetails.description}</p>
+          <p>{props.aboutMeDetails.description}</p>
         </article>
       </section>
       <br></br>
-      {lengthEducation === 0 ? (
+      {props.lengthEducation === 0 ? (
         <>{null}</>
       ) : (
         <>
@@ -216,12 +195,12 @@ function PreviewCV({
                 gap: "30px",
               }}
             >
-              {listItemsExperience}
+              {props.listItemsExperience}
             </ul>
           </section>
         </>
       )}
-      {lengthExperience === 0 ? (
+      {props.lengthExperience === 0 ? (
         <>{null}</>
       ) : (
         <>
@@ -243,7 +222,7 @@ function PreviewCV({
                 gap: "30px",
               }}
             >
-              {listItemsEducation}
+              {props.listItemsEducation}
             </ul>
           </section>
         </>

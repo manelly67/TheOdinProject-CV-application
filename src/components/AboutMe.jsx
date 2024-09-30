@@ -5,99 +5,51 @@ import {
   phoneValidation,
 } from "./auxiliaryFunctions.js";
 
-function AboutMe({
-  title,
-  initialColor,
-  bgColor,
-  isActive,
-  onShow,
-  firstName,
-  setFirstName,
-  lastName,
-  setLastName,
-  email,
-  setEmail,
-  phone,
-  setPhone,
-  description,
-  setDescription,
-  firstNameMissing,
-  setFirstNameMissing,
-  lastNameMissing,
-  setLastNameMissing,
-  emailMissing,
-  setEmailMissing,
-  emailValidity,
-  setEmailValidity,
-  phoneValidity,
-  setPhoneValidity,
-}) {
-  let activeColor = isActive ? bgColor : initialColor;
+function AboutMe(props) {
+  let activeColor = props.isActive ? props.bgColor : props.initialColor;
 
   return (
     <section className="headerSection" style={{ backgroundColor: activeColor }}>
-      <h2>{title}</h2>
-      {isActive ? (
+      <h2>{props.title}</h2>
+      {props.isActive ? (
         <>
           <FormAboutMe
             activeColor={activeColor}
-            firstName={firstName}
-            setFirstName={setFirstName}
-            lastName={lastName}
-            setLastName={setLastName}
-            email={email}
-            setEmail={setEmail}
-            phone={phone}
-            setPhone={setPhone}
-            description={description}
-            setDescription={setDescription}
-            firstNameMissing={firstNameMissing}
-            setFirstNameMissing={setFirstNameMissing}
-            lastNameMissing={lastNameMissing}
-            setLastNameMissing={setLastNameMissing}
-            emailMissing={emailMissing}
-            setEmailMissing={setEmailMissing}
-            emailValidity={emailValidity}
-            setEmailValidity={setEmailValidity}
-            phoneValidity={phoneValidity}
-            setPhoneValidity={setPhoneValidity}
+            firstName={props.firstName}
+            setFirstName={props.setFirstName}
+            lastName={props.lastName}
+            setLastName={props.setLastName}
+            email={props.email}
+            setEmail={props.setEmail}
+            phone={props.phone}
+            setPhone={props.setPhone}
+            description={props.description}
+            setDescription={props.setDescription}
+            firstNameMissing={props.firstNameMissing}
+            setFirstNameMissing={props.setFirstNameMissing}
+            lastNameMissing={props.lastNameMissing}
+            setLastNameMissing={props.setLastNameMissing}
+            emailMissing={props.emailMissing}
+            setEmailMissing={props.setEmailMissing}
+            emailValidity={props.emailValidity}
+            setEmailValidity={props.setEmailValidity}
+            phoneValidity={props.phoneValidity}
+            setPhoneValidity={props.setPhoneValidity}
           />
         </>
       ) : (
-        <button onClick={onShow}>Edit</button>
+        <button onClick={props.onShow}>Edit</button>
       )}
     </section>
   );
 }
 
-function FormAboutMe({
-  activeColor,
-  firstName,
-  setFirstName,
-  lastName,
-  setLastName,
-  email,
-  setEmail,
-  phone,
-  setPhone,
-  description,
-  setDescription,
-  firstNameMissing,
-  setFirstNameMissing,
-  lastNameMissing,
-  setLastNameMissing,
-  emailMissing,
-  setEmailMissing,
-  emailValidity,
-  setEmailValidity,
-  phoneValidity,
-  setPhoneValidity,
-}) {
+function FormAboutMe(props) {
   return (
     <>
       <div
         className="preview"
-        style={{ display: "block", backgroundColor: activeColor }}
+        style={{ display: "block", backgroundColor: props.activeColor }}
       >
         <form id="about-me" autoComplete="off" noValidate>
           <div>
@@ -105,18 +57,18 @@ function FormAboutMe({
               key="firstName"
               label="First Name: "
               id="firstName"
-              value={firstName}
+              value={props.firstName}
               onChange={(event) => {
-                setFirstName(event.target.value);
+                props.setFirstName(event.target.value);
                 inlineValidMissing(
                   "text",
                   "required",
                   event.target.value,
-                  setFirstNameMissing
+                  props.setFirstNameMissing
                 );
               }}
             />
-            {firstNameMissing === true ? (
+            {props.firstNameMissing === true ? (
               <>
                 <p>required field</p>
               </>
@@ -129,18 +81,18 @@ function FormAboutMe({
               key="lastName"
               label="Last Name: "
               id="lastName"
-              value={lastName}
+              value={props.lastName}
               onChange={(event) => {
-                setLastName(event.target.value);
+                props.setLastName(event.target.value);
                 inlineValidMissing(
                   "text",
                   "required",
                   event.target.value,
-                  setLastNameMissing
+                  props.setLastNameMissing
                 );
               }}
             />
-            {lastNameMissing === true ? (
+            {props.lastNameMissing === true ? (
               <>
                 <p>required field</p>
               </>
@@ -153,27 +105,31 @@ function FormAboutMe({
               key="email"
               label="Email Address: "
               id="email"
-              value={email}
+              value={props.email}
               onChange={(event) => {
-                setEmail(event.target.value);
+                props.setEmail(event.target.value);
                 inlineValidMissing(
                   "email",
                   "required",
                   event.target.value,
-                  setEmailMissing
+                  props.setEmailMissing
                 );
-                inlineValid("email", event.target.value, setEmailValidity);
+                inlineValid(
+                  "email",
+                  event.target.value,
+                  props.setEmailValidity
+                );
               }}
             />
             <div>
-              {emailMissing === true ? (
+              {props.emailMissing === true ? (
                 <>
                   <p>required field</p>
                 </>
               ) : (
                 <>{null}</>
               )}
-              {emailValidity === false ? (
+              {props.emailValidity === false ? (
                 <>
                   <p>enter a valid email</p>
                 </>
@@ -187,13 +143,13 @@ function FormAboutMe({
               key="phone"
               label="Phone Number: "
               id="phone"
-              value={phone}
+              value={props.phone}
               onChange={(event) => {
-                setPhone(event.target.value);
-                phoneValidation(event.target.value, setPhoneValidity);
+                props.setPhone(event.target.value);
+                phoneValidation(event.target.value, props.setPhoneValidity);
               }}
             />
-            {phoneValidity === false ? (
+            {props.phoneValidity === false ? (
               <>
                 <p>phone must be a ten digit number</p>
               </>
@@ -206,8 +162,8 @@ function FormAboutMe({
               key="description"
               label={"Describe Yourself: "}
               id="description"
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
+              value={props.description}
+              onChange={(event) => props.setDescription(event.target.value)}
             />
           </div>
         </form>
